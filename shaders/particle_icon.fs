@@ -18,6 +18,7 @@ out vec4 out_FragColor;
 void main() 
 {
     vec4 texel = texture(Texture, v_TexCoord).bgra; // webkit texture is bgra
+    vec3 primary_color = pow(v_ColorPrimary.rgb, vec3(1.0 / 2.2, 1.0/2.2, 1.0/2.2));
     if (v_ColorPrimary.w == 0.0)
         out_FragColor = texel;
     else
@@ -27,8 +28,7 @@ void main()
         
         vec3 mixColor = v_SelectedState > 0.0 ? vec3(1.0, 1.0, 1.0) : vec3(0.0, 0.0, 0.0);
         
-        // boost brightness by 3.0
-        vec3 color = (texel.r * 3.0) * mix(mixColor, v_ColorPrimary.rgb, pow(texel.g, 1.0 / 2.2) / (texel.a + 0.00001));
+        vec3 color = texel.r * mix(mixColor, primary_color, pow(texel.g, 1.0 / 2.2) / (texel.a + 0.00001));
 
         float alpha = texel.a;
 
